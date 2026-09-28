@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake News Detector - Transformer ML</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="badge">MACHINE LEARNING PROJECT</div>
+            <h1>Fake News Detector</h1>
+            <p class="subtitle">Powered by HuggingFace Transformer Models & Deep Natural Language Processing</p>
+        </header>
+
+        <!-- Main Grid Layout -->
+        <main class="main-grid">
+            <!-- Left Column: Input Box -->
+            <section class="card input-section">
+                <h2><span class="icon">📝</span> News Article Input</h2>
+                <p class="section-desc">Paste news headlines, social media posts, or article snippets below to evaluate authenticity.</p>
+                
+                <textarea id="newsInput" placeholder="Paste news article content here... (e.g., 'Scientists discover groundbreaking renewable energy breakthrough...')" rows="7"></textarea>
+                
+                <!-- Quick Sample Buttons -->
+                <div class="samples">
+                    <span>Try Samples:</span>
+                    <button type="button" class="btn-sample real" onclick="loadSample('real')">✅ Real News Sample</button>
+                    <button type="button" class="btn-sample fake" onclick="loadSample('fake')">⚠️ Fake News Sample</button>
+                </div>
+
+                <div class="action-bar">
+                    <button id="analyzeBtn" class="btn-primary" onclick="analyzeNews()">
+                        <span id="btnText">Analyze News Text</span>
+                        <div id="btnSpinner" class="spinner hidden"></div>
+                    </button>
+                    <button type="button" class="btn-secondary" onclick="clearInput()">Clear</button>
+                </div>
+            </section>
+
+            <!-- Right Column: Results -->
+            <section class="card result-section">
+                <h2><span class="icon">⚡</span> Classification Result</h2>
+                
+                <div id="placeholderResult" class="placeholder-box">
+                    <div class="placeholder-icon">🔍</div>
+                    <p>Enter news text on the left and click <strong>Analyze News Text</strong> to see Transformer predictions & confidence score.</p>
+                </div>
+
+                <div id="resultContent" class="result-box hidden">
+                    <!-- Status Badge -->
+                    <div class="status-banner" id="statusBanner">
+                        <span id="resultBadge" class="result-badge">REAL NEWS</span>
+                        <span id="confidenceText" class="confidence-val">96.5% Confidence</span>
+                    </div>
+
+                    <!-- Progress Bars -->
+                    <div class="prob-bars">
+                        <div class="prob-group">
+                            <div class="prob-header">
+                                <span>Fake News Probability</span>
+                                <span id="fakeProbVal">0%</span>
+                            </div>
+                            <div class="bar-bg"><div id="fakeBar" class="bar-fill fake-fill" style="width: 0%;"></div></div>
+                        </div>
+
+                        <div class="prob-group">
+                            <div class="prob-header">
+                                <span>Real News Probability</span>
+                                <span id="realProbVal">0%</span>
+                            </div>
+                            <div class="bar-bg"><div id="realBar" class="bar-fill real-fill" style="width: 0%;"></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Word Heatmap Explainability -->
+                    <div class="explainability">
+                        <h3><span class="icon">💡</span> Explainable AI (Word Impact)</h3>
+                        <p class="xai-desc">Key words analyzed by Transformer Attention:</p>
+                        <div id="tokenHeatmap" class="heatmap-box"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Pipeline Workflow Visualizer -->
+        <section class="card pipeline-card">
+            <h2><span class="icon">⚙️</span> How Transformer Model Works (Pipeline Flow)</h2>
+            <div class="pipeline-steps">
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <h4>Raw Text Input</h4>
+                    <p>Cleaned news headline & body text</p>
+                </div>
+                <div class="step-arrow">➔</div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <h4>WordPiece Tokenization</h4>
+                    <p>Converts text into numerical Tokens & IDs</p>
+                </div>
+                <div class="step-arrow">➔</div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <h4>Self-Attention Layer</h4>
+                    <p>DistilBERT calculates contextual embeddings</p>
+                </div>
+                <div class="step-arrow">➔</div>
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <h4>Softmax Output</h4>
+                    <p>Calculates Real vs Fake probability</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Metrics Footer -->
+        <footer class="metrics-footer">
+            <div class="metric-item">
+                <span class="m-label">Model Architecture</span>
+                <span class="m-val" id="mModel">DistilBERT Transformer</span>
+            </div>
+            <div class="metric-item">
+                <span class="m-label">Test Accuracy</span>
+                <span class="m-val highlight" id="mAcc">94.2%</span>
+            </div>
+            <div class="metric-item">
+                <span class="m-label">Precision</span>
+                <span class="m-val" id="mPrec">93.8%</span>
+            </div>
+            <div class="metric-item">
+                <span class="m-label">Recall</span>
+                <span class="m-val" id="mRec">94.5%</span>
+            </div>
+            <div class="metric-item">
+                <span class="m-label">F1-Score</span>
+                <span class="m-val highlight" id="mF1">94.1%</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
